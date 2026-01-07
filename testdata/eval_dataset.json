@@ -1,0 +1,26 @@
+[
+    {
+        "inputs": {
+            "question": "How old is earth?"
+        },
+        "expectations": {
+            "expected_response": "The Earth is approximately 4.54 billion years old."
+        }
+    },
+    {
+        "inputs": {
+            "question": "How old is the universe?"
+        },
+        "expectations": {
+            "expected_response": "The universe is approximately 14 billion years old."
+        }
+    },
+    {
+        "inputs": {
+            "question": "How old am I?"
+        },
+        "expectations": {
+            "expected_response": "You are not old at all. You are forever young!"
+        }
+    }
+  ]

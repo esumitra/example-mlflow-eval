@@ -1,0 +1,16 @@
+[project]
+name = "example-mlflow-eval"
+version = "0.1.0"
+description = "Sample project demonstrating evaluation with MLFlow"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+  "pydantic",
+  "pydantic-settings",
+  "langchain",
+  "langchain-ollama",
+  "langchain-core",
+  "openai",
+  "litellm",
+  "mlflow"
+]

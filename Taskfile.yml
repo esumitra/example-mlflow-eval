@@ -1,0 +1,47 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  GREETING: Hello. Try asking a question using 'task ask -- <your question>'
+
+tasks:
+  default:
+    cmds:
+      - echo "{{.GREETING}}"
+    silent: true
+
+  start_services:
+    dir: '{{.USER_WORKING_DIR}}'
+    preconditions:
+      - test -f docker-compose.yml
+    cmds:
+      - docker-compose up -d
+    desc: Start the MLflow, S3, DB, and Ollama LLM services
+    silent: true
+  
+  stop_services:
+    cmds:
+      - docker-compose -f docker-compose.yml down
+    desc: Stop the MLflow, S3, DB, and Ollama LLM services
+    silent: true
+  
+  add_model:
+    dir: '{{.USER_WORKING_DIR}}'
+    preconditions:
+      - docker inspect --format "{{.State.Status}}" ollama_server | grep -q running
+    cmds:
+      - docker exec -it ollama_server ollama pull {{.CLI_ARGS}}
+    desc: Add a model to ollama server .e.g., task add_model -- gemma3:1b
+    silent: true
+  
+  ask:
+      cmds:
+        - uv run -m evaluation.ask {{.CLI_ARGS}}
+      desc: Ask a question to the LLM e.g, task ask -- how old is Mars
+      silent: true
+  eval:
+    cmds:
+      - uv run -m evaluation.eval
+    desc: Evaluate the LLM using the evaluation dataset
+    silent: true
