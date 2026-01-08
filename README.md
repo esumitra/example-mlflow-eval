@@ -6,9 +6,53 @@ This project contains code and resources for evaluating large language models (L
 - Predefined evaluation metrics for LLMs.
 - Local LLM usage examples with Ollama.
 
-**System Diagram**
+**Evaluation System Diagram**
 
-tbd
+```mermaid
+flowchart LR
+    %% =====================
+    %% MLflow Stack
+    %% =====================
+    subgraph MLflow_Stack["MLflow"]
+        MLflowServer["MLflow Server"]
+        MLflowArtifacts["MLflow Artifacts (S3)"]
+        MLflowDB["MLflow DB (MySQL)"]
+
+        MLflowServer --> MLflowArtifacts
+        MLflowServer --> MLflowDB
+    end
+
+    %% =====================
+    %% AI Application Stack
+    %% =====================
+    subgraph AI_App_Stack["AI Application"]
+        AIApp["AI App"]
+        Evaluator["Evaluator"]
+        LLMClient["LLM Client"]
+    end
+
+    %% =====================
+    %% LLM Infrastructure
+    %% =====================
+    subgraph LLM_Infra["LLM Infrastructure"]
+        LLMService["LLM Service"]
+        LLMModels["LLM Models"]
+
+        LLMService <--> LLMModels
+    end
+
+    %% =====================
+    %% Cross-System Flows
+    %% =====================
+    AIApp <--> MLflowServer
+    Evaluator <--> MLflowServer
+
+    AIApp --> LLMClient
+    Evaluator --> LLMClient
+
+    LLMClient <--> LLMService
+```
+
 
 ## Getting Started
 
@@ -19,7 +63,7 @@ tbd
 ### Setup
 1. Clone the repository:
    ```bash
-   git clone
+   git clone https://github.com/esumitra/example-mlflow-eval.git
     ```
 2. Navigate to the project directory:
    ```bash
@@ -57,7 +101,10 @@ task eval
 ```
 
 Review the results at http://localhost:5000. A sample screenshot is shown below:
-![MLflow Evaluation Screenshot](docs/mlflow_eval.png)
+
+![MLflow Evaluation Screenshot](docs/mlflow-eval.png)
 ## References
-tbd
+- [MLflow Documentation](https://mlflow.org/docs/latest/genai/eval-monitor/)
+- [Ragas LLM Evaluation Metrics](https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/) 
+- [Ollama Models](https://ollama.com/search)
 
